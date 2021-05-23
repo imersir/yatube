@@ -26,11 +26,11 @@
             {% if flag_user %}
             <li class="list-group-item">
                 {% if follow %}
-                        <a class="btn btn-lg btn-light" href="{% url 'profile_unfollow' user_r.username %}" role="button">
+                        <a class="btn btn-lg btn-light" href="{% url 'profile_unfollow' user_r %}" role="button">
                             Отписаться
                         </a>
                         {% else %}
-                        <a class="btn btn-lg btn-primary" href="{% url 'profile_follow' user_r.username %}" role="button">
+                        <a class="btn btn-lg btn-primary" href="{% url 'profile_follow' user_r %}" role="button">
                             Подписаться
                         </a>
                 {% endif %}
