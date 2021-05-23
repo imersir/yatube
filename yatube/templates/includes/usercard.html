@@ -23,17 +23,19 @@
                     Записей: {{ user_r.posts.all.count }}
                 </div>
             </li>
+            {% if flag_user %}
             <li class="list-group-item">
                 {% if follow %}
-                        <a class="btn btn-lg btn-light" href="{% url 'profile_unfollow' user_r %}" role="button">
+                        <a class="btn btn-lg btn-light" href="{% url 'profile_unfollow' user_r.username %}" role="button">
                             Отписаться
                         </a>
                         {% else %}
-                        <a class="btn btn-lg btn-primary" href="{% url 'profile_follow' user_r %}" role="button">
+                        <a class="btn btn-lg btn-primary" href="{% url 'profile_follow' user_r.username %}" role="button">
                             Подписаться
                         </a>
                 {% endif %}
             </li>
+            {% endif %}
         </ul>
     </div>
 </div>

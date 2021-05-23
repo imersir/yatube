@@ -57,9 +57,12 @@ def profile(request, username):
     paginator = Paginator(posts, settings.PAGINATOR_NUMBER_OF_PAGES)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
+    flag_user = True
+    if user_r == request.user:
+        flag_user = False
     return render(request, 'profile.html',
                   {'user_r': user_r, 'page': page, 'paginator': paginator,
-                   'follow': follow})
+                   'follow': follow, 'flag_user': flag_user})
 
 
 def post_view(request, username, post_id):
