@@ -289,15 +289,18 @@ class TestFollowComment(TestCase):
 
     # Только авторизированный пользователь может комментировать посты
     def test_only_aut_user_comment(self):
-        self.authorized_client.post(reverse('add_comment', kwargs={
-            'username': self.author_user.username, 'post_id': self.post.id}),
-                                    data={'text': self.post.text},
-                                    follow=True, )
+        self.authorized_client.post(
+            reverse('add_comment', kwargs={
+                'username': self.author_user.username,
+                'post_id': self.post.id}),
+            data={'text': self.post.text}, follow=True, )
         count_comment = Comment.objects.filter(text=self.post.text).count()
         self.assertEqual(count_comment, 1)
 
-        self.unauthorized_client.post(reverse('add_comment', kwargs={
-            'username': self.author_user.username, 'post_id': self.post.id}),
-                                      data={'text': 'Текст2'}, follow=True, )
+        self.unauthorized_client.post(
+            reverse('add_comment', kwargs={
+                'username': self.author_user.username,
+                'post_id': self.post.id}),
+            data={'text': 'Текст2'}, follow=True, )
         count_new_comment = Comment.objects.filter(text='Текст2').count()
         self.assertEqual(count_new_comment, 0)
