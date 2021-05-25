@@ -44,7 +44,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE,
                              related_name='comments',
-                             verbose_name='Комментарий')
+                             verbose_name='Пост')
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='comments',
                                verbose_name='Автор комментария')
@@ -66,7 +66,8 @@ class Follow(models.Model):
                              on_delete=models.CASCADE,
                              verbose_name='Подписчик')
     author = models.ForeignKey(User, related_name='following',
-                               on_delete=models.CASCADE, verbose_name='Автор')
+                               on_delete=models.CASCADE,
+                               verbose_name='Пользователь')
 
     class Meta:
         verbose_name = 'Подписка'

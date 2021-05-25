@@ -125,3 +125,14 @@ class PostFormImageTests(TestCase):
                 image=self.post.image,
             ).exists()
         )
+        # Не валидное поле image
+        self.assertFalse(
+            Post.objects.filter(
+                author=self.post.author,
+                text=self.post.text,
+                group=self.group.id,
+                image=SimpleUploadedFile(name='txt.docx',
+                                         content=b'No image',
+                                         content_type='text') and 1
+            ).exists()
+        )

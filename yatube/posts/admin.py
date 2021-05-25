@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Group, Post
+from .models import Comment, Follow, Group, Post
 
 
 @admin.register(Group)
@@ -19,3 +19,19 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('text',)  # Строка поиска
     list_filter = ('pub_date',)  # Боковая навигация
     empty_value_display = '-пусто-'
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    """Вывод в навигацию для CommentAdmin"""
+    list_display = ('post', 'author', 'text', 'created',)
+    search_fields = ('text',)
+    list_filter = ('created',)
+    empty_value_display = '-пусто-'
+
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    """Вывод в навигацию для FollowAdmin"""
+    list_display = ('user', 'author')
+    list_filter = ('user', 'author')
