@@ -1,3 +1,4 @@
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -10,7 +11,7 @@ from .models import Comment, Follow, Group, Post, User
 
 
 def index(request):
-    """Вывод на главной странице сообщества"""
+    """Вывод на главной странице сообщества."""
     latest = Post.objects.all()
     paginator = Paginator(latest, settings.PAGINATOR_NUMBER_OF_PAGES)
     page_number = request.GET.get('page')
@@ -19,7 +20,7 @@ def index(request):
 
 
 def group_posts(request, slug):
-    """Вывод на главной странице Группы"""
+    """Вывод на главной странице Группы."""
     group = get_object_or_404(Group,
                               slug=slug)  # Ошибка '404',при неравенстве URL`ов
     posts = group.posts.all()
@@ -31,7 +32,7 @@ def group_posts(request, slug):
 
 
 class PostView(CreateView):
-    """Generic для вывода form`ы на страницу"""
+    """Generic для вывода form`ы на страницу."""
     form_class = PostForm
     success_url = reverse_lazy('index')
     template_name = 'new.html'
@@ -39,7 +40,7 @@ class PostView(CreateView):
 
 @login_required  # Декоратор проверки авторизации
 def new_post(request):
-    """Функция создания нового поста для авторизированных пользователей"""
+    """Функция создания нового поста для авторизированных пользователей."""
     form = PostForm(request.POST or None)
     if form.is_valid():
         post = form.save(commit=False)  # Заполняем, но не сохраняем в БД.
@@ -50,7 +51,7 @@ def new_post(request):
 
 
 def profile(request, username):
-    """ Профиль пользователя """
+    """Профиль пользователя."""
     user_r = get_object_or_404(User, username=username)
     posts = user_r.posts.all()
     follow = user_r.following.filter(user=request.user.id).exists()
@@ -66,7 +67,7 @@ def profile(request, username):
 
 
 def post_view(request, username, post_id):
-    """ Просмотр постов пользователя """
+    """Просмотр постов пользователя."""
     user_r = get_object_or_404(User, username=username)
     post = get_object_or_404(Post, id=post_id)
     comments = post.comments.all()
@@ -78,7 +79,7 @@ def post_view(request, username, post_id):
 
 @login_required
 def post_edit(request, username, post_id):
-    """Редактирование записи"""
+    """Редактирование записи."""
     post = get_object_or_404(Post, id=post_id, author__username=username)
     if post.author != request.user:
         return redirect('post', username, post_id)
@@ -93,7 +94,7 @@ def post_edit(request, username, post_id):
 
 @login_required
 def post_delete(request, username, post_id):
-    """ Удаление поста """
+    """Удаление поста."""
     if request.user.username != username:
         return redirect(f'/{username}/{post_id}')
     post = get_object_or_404(Post, pk=post_id)
@@ -103,7 +104,7 @@ def post_delete(request, username, post_id):
 
 @login_required
 def add_comment(request, username, post_id):
-    """ Добавление комментария к посту """
+    """Добавление комментария к посту."""
     post = get_object_or_404(Post, pk=post_id, author__username=username)
     form = CommentForm(request.POST or None)
     if form.is_valid():
@@ -117,7 +118,7 @@ def add_comment(request, username, post_id):
 
 @login_required
 def comment_delete(request, username, post_id, comment_id):
-    """ Удаление комментария """
+    """Удаление комментария."""
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.user.username == comment.author.username:
         comment.delete()
@@ -126,7 +127,7 @@ def comment_delete(request, username, post_id, comment_id):
 
 @login_required
 def follow_index(request):
-    """ Подписка на пользователя """
+    """Подписка на пользователя."""
     posts = Post.objects.filter(author__following__user=request.user)
     paginator = Paginator(posts, settings.PAGINATOR_NUMBER_OF_PAGES)
     page_number = request.GET.get('page')
@@ -136,7 +137,7 @@ def follow_index(request):
 
 @login_required
 def profile_follow(request, username):
-    """ Подписка на пользователя """
+    """Подписка на пользователя."""
     author = get_object_or_404(User, username=username)
     if request.user != author:
         Follow.objects.get_or_create(user=request.user, author=author)
@@ -145,7 +146,7 @@ def profile_follow(request, username):
 
 @login_required
 def profile_unfollow(request, username):
-    """ Отписка от пользователя """
+    """Отписка от пользователя."""
     author = get_object_or_404(User, username=username)
     if request.user != author:
         Follow.objects.filter(user=request.user, author=author).delete()
